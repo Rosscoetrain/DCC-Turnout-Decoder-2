@@ -81,12 +81,17 @@ uint16_t BaseTurnoutAddress;
 
 
 /*
- * Rosscoe Train functions and variables
+ * Rosscoe Train functions, variables and defines
  */
 // for address learning mode
+// uncomment below to compile with learning capabilities
 
+//#define LEARNING
+
+#ifdef LEARNING
 int LEARNINGBUTTON = A6;    // pin A6
 int learningMode = LOW;
+#endif
 
 // buffer to hold serial commands
 String readString;
@@ -119,8 +124,10 @@ void notifyDccAccTurnoutOutput( uint16_t Addr, uint8_t Direction, uint8_t Output
   Serial.println(OutputPower ? "On" : "Off") ;
 #endif
 
+
 // check to see if in learning mode and update address
 
+#ifdef LEARNING
   if (learningMode == HIGH) {
 
 //    int H = (Addr - 1) / 64;
@@ -139,7 +146,10 @@ void notifyDccAccTurnoutOutput( uint16_t Addr, uint8_t Direction, uint8_t Output
     Dcc.setCV(CV_ACCESSORY_DECODER_ADDRESS_LSB, L);
 
    }
-  else {
+  else
+#endif
+  
+   {
     if(( Addr >= BaseTurnoutAddress ) && ( Addr < (BaseTurnoutAddress + NUM_TURNOUTS )) && OutputPower )
      {
       uint16_t pinIndex = ( (Addr - BaseTurnoutAddress) << 1 ) + Direction ;
@@ -266,6 +276,8 @@ void loop()
   //
   ////////////////////////////////////////////////////////////////
 
+
+#ifdef LEARNING
   learningbuttonVal = dr(LEARNINGBUTTON);
 
   if (learningbuttonOldval != learningbuttonVal) {
@@ -273,8 +285,7 @@ void loop()
     if (learningMode == HIGH) showAcknowledge(3);
    }
   learningbuttonOldval = learningbuttonVal;
-
-
+#endif
 
     // see if there are serial commands
   readString="";              //empty for next input
