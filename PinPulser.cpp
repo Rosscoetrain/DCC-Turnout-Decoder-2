@@ -56,12 +56,14 @@ PP_State PinPulser::process(void)
       byte port = 0x12 + byte((pinQueue[0] - 1) / 8);
       byte data = activeOutputState << ((pinQueue[0] - 1) % 8);
 
-//      Serial.print("port = ");Serial.println(port, HEX);
-//      Serial.print("data = ");Serial.println(data, BIN);
+      Serial.print("PP port = ");Serial.println(port, HEX);
+      Serial.print("PP data = ");Serial.println(data, BIN);
+
+//      Wire.begin();
 
       Wire.beginTransmission(I2C_ADDRESS_1);
       Wire.write(port);        // GPIO
-      Wire.write(data);   // port
+      Wire.write(data);        // port
       Wire.endTransmission();
 
       targetMs = millis() + onMs;

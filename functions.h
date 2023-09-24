@@ -34,7 +34,9 @@ void initMcp23017(byte outputState)
 //    }
    }
 
-    
+
+  Serial.println("Setup MCP23017");
+
     // set I/O pins to outputs
   Wire.beginTransmission(I2C_ADDRESS_1);
   Wire.write(0x00); // IODIRA register

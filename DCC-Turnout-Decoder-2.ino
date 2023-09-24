@@ -1,7 +1,7 @@
 #include <NmraDcc.h>
 #include "PinPulser.h"
 
-// This Example shows how to use the library as a DCC Accessory Decoder to drive 8 Pulsed Turnouts
+// This is a DCC Accessory Decoder to drive 8 Pulsed Turnouts
 
 // You can print every DCC packet by un-commenting the line below
 //#define NOTIFY_DCC_MSG
@@ -119,7 +119,8 @@ void notifyDccAccTurnoutOutput( uint16_t Addr, uint8_t Direction, uint8_t Output
   Serial.print("notifyDccAccTurnoutOutput: Turnout: ") ;
   Serial.print(Addr,DEC) ;
   Serial.print(" Direction: ");
-  Serial.print(Direction ? "Closed" : "Thrown") ;
+//  Serial.print(Direction ? "Closed" : "Thrown") ;
+  Serial.print(Direction ? "Thrown" : "Closed") ;
   Serial.print(" Output: ");
   Serial.println(OutputPower ? "On" : "Off") ;
 #endif
@@ -155,10 +156,10 @@ void notifyDccAccTurnoutOutput( uint16_t Addr, uint8_t Direction, uint8_t Output
       uint16_t pinIndex = ( (Addr - BaseTurnoutAddress) << 1 ) + Direction ;
       pinPulser.addPin(outputs[pinIndex]);
 #ifdef  NOTIFY_TURNOUT_MSG
-      Serial.print(" Pin Index: ");
-      Serial.print(pinIndex,DEC);
-      Serial.print(" Pin: ");
-      Serial.print(outputs[pinIndex],DEC);
+      Serial.print("NDATO Pin Index: ");
+      Serial.println(pinIndex,DEC);
+      Serial.print("NDATO Pin: ");
+      Serial.println(outputs[pinIndex],DEC);
 #endif
      }
    }
